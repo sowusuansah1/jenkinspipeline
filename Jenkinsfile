@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'localMaven'
+    }    
+
     parameters {
          string(name: 'deploy-staging', defaultValue: '192.168.1.10', description: 'Staging Server')
          string(name: 'deploy-prod', defaultValue: '192.168.1.10', description: 'Production Server')
