@@ -1,11 +1,16 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'localMaven'
+    parameters {
+         string(name: 'deploy-staging', defaultValue: '3.91.248.239', description: 'Staging Server')
+         string(name: 'deploy-prod', defaultValue: '54.226.87.118', description: 'Production Server')
     }
-         
-    stages{
+
+    triggers {
+         pollSCM('* * * * *')
+     }
+
+stages{
         stage('Build'){
             steps {
                 sh 'mvn clean package'
@@ -17,31 +22,21 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy to Staging'){
-            steps {
-                build job: 'deploy-to-staging'
-            }
-        }
 
-        stage ('Deploy to Production'){
-            steps{
-                timeout(time:5, unit:'DAYS'){
-                    input message:'Approve PRODUCTION Deployment?'
+        stage ('Deployments'){
+            parallel{
+                stage ('Deploy to Staging'){
+                    steps {
+                        sh "scp -i /home/ec2-user/id_rsa **/target/*.war ec2-user@${params.deploy-staging}:/home/ec2-user/apache-tomcat-8.5.83/webapps"
+                    }
                 }
 
-                build job: 'deploy-to-prod'
-            }
-            post {
-                success {
-                    echo 'Code deployed to Production.'
-                }
-
-                failure {
-                    echo ' Deployment failed.'
+                stage ("Deploy to Production"){
+                    steps {
+                        sh "scp -i /home/ec2-user/id_rsa **/target/*.war ec2-user@${params.deploy-prod}:/home/ec2-user/apache-tomcat-8.5.83/webapps"
+                    }
                 }
             }
         }
-
-
     }
 }
