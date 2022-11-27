@@ -5,10 +5,10 @@ pipeline {
         maven 'localMaven'
     }    
 
-    parameters {
-         string(name: 'deploy-staging', defaultValue: '192.168.1.10', description: 'Staging Server')
-         string(name: 'deploy-prod', defaultValue: '192.168.1.10', description: 'Production Server')
-    }
+    // parameters {
+    //      string(name: 'deploy-staging', defaultValue: '192.168.1.10', description: 'Staging Server')
+    //      string(name: 'deploy-prod', defaultValue: '192.168.1.10', description: 'Production Server')
+    // }
 
     triggers {
          pollSCM('* * * * *')
@@ -31,13 +31,13 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh "cp **/target/*.war ${params.deploy-staging}:/root/apache-tomcat-8.5.83-staging/webapps/"
+                        sh "cp **/target/*.war /root/apache-tomcat-8.5.83-staging/webapps/"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        sh "cp **/target/*.war ${params.deploy-prod}:/root/apache-tomcat-8.5.83-staging/webapps/"
+                        sh "cp **/target/*.war /root/apache-tomcat-8.5.83-prod/webapps/"
                     }
                 }
             }
