@@ -31,13 +31,13 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        "cp **/target/*.war /root/apache-tomcat-8.5.83-staging/webapps/"
+                        sh "cp **/target/*.war /root/apache-tomcat-8.5.83-staging/webapps/"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        "cp **/target/*.war /root/apache-tomcat-8.5.83-prod/webapps/"
+                        sh "cp **/target/*.war /root/apache-tomcat-8.5.83-prod/webapps/"
                     }
                 }
             }
