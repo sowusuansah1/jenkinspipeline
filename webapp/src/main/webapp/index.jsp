@@ -1,1 +1,1 @@
-Hello, World! It's a holiday!!!
+Hello, World! It's a holiday, Come let's worship the Lord !!!
