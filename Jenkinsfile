@@ -11,11 +11,11 @@ pipeline {
     // }
 
     triggers {
-         pollSCM('* * * * *')
+         pollSCM ('* * * * *')
      }
 
-stages{
-        stage('Build'){
+stages {
+        stage ('Build'){
             steps {
                 sh 'mvn clean package'
             }
@@ -26,9 +26,9 @@ stages{
                 }
             }
         }
-
+ 
         stage ('Deployments'){
-            parallel{
+            parallel {
                 stage ('Deploy to Staging'){
                     steps {
                         sh "sudo cp **/target/*.war /root/apache-tomcat-8.5.83-staging/webapps/"
