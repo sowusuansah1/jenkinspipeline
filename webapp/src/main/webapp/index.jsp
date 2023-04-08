@@ -1,1 +1,1 @@
-Hello, World! It's a holiday, You Rock with love !!!
+Hello, World! It's a holiday, You Rock in love with everyone  !!!
